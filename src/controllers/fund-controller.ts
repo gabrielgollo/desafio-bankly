@@ -1,0 +1,5 @@
+class FundController{
+    static getStatus(): {
+
+    }
+}
