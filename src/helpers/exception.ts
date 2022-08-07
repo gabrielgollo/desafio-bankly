@@ -3,6 +3,6 @@ export class Exception extends Error{
     constructor(error: string, statusCode: number){
         super(error)
 
-        this.statusCode = statusCode
+        this.statusCode = statusCode || 500
     }
 }

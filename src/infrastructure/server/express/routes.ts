@@ -1,19 +1,9 @@
-import express, { Request, Response} from 'express'
+import express from 'express'
+import FundRoutes from '../../../controllers/fund/fund.routes'
 
 const Routes = express.Router()
-import AccountRoutes from '../../../controllers/account/account.routes'
 
-
-Routes.get('/', (_req: Request, res: Response) => {
-    res.status(200).json({
-        message: 'Hello World!'
-    })
-})
-
-
-
-Routes.use('/account/', AccountRoutes)
-
+Routes.use('/fund-transfer/', FundRoutes)
 
 
 export default Routes

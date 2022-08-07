@@ -1,9 +1,6 @@
-import { Account } from "./account";
-
 export interface TransactionsInterface {
-    accountOrigin: Account;
-    accountDestination: Account;
+    accountOrigin: string;
+    accountDestination: string;
     value: number;
-    status: "In Queue" | "Processing" | "Confirmed" | "Error";
-    method: "DOC" | "TED" | "PIX" | "TEF"
+    status?: "In Queue" | "Processing" | "Confirmed" | "Error";
 }

@@ -1,3 +1,3 @@
-export default interface QueueInterface {
+export default interface IQueue {
     sendMessage: (message: string) => Promise<void>
 }
