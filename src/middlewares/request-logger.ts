@@ -1,6 +1,8 @@
+import { Request } from "express";
 import { getLogger } from "log4js";
+import { formatDate } from "../utils/format-date";
 const logger = getLogger('')
 
-export function requestLogger(req: Express.Request): void {
-    logger.info(`${Date.now()}Request received: ${req}`)
+export function requestLogger(_req: Request): void {
+    logger.info(`${formatDate(new Date)} - Request received!`)
 }

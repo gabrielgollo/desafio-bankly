@@ -1,3 +1,3 @@
-export interface ServerInterface{
-    start: (SERVER_PORT: string, startMessage: string, logger: (message:string) => void) => void
+export interface IServer{
+    public start: (SERVER_PORT: string, callbackFn: () => void) => void
 }

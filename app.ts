@@ -1,31 +1,28 @@
 import { config } from 'dotenv'
+config({ path: './.env' })
+
 import * as log4js from 'log4js'
 import * as logConfig from './src/configs/log4js.json'
-import Router from './src/routes'
-
-const express = require('express')
-const { Request, Response } = express
-
-import { responseLogger } from './src/middlewares/response-logger'
-
-config({ path: './.env' })
-const { SERVER_PORT } = process.env
-
+import { startConnection } from './src/infrastructure/database/mysql/mysql'
+import ExpressServer from './src/infrastructure/server/express/express-server'
+import { IServer } from './src/infrastructure/server/interface/server'
 log4js.configure(logConfig)
 const logger = log4js.getLogger('')
 
 
 
-const app = express()
-
-app.use('/', (req: any, res: any, next: any) => {
-    responseLogger(res)
-    next()
-})
-
-app.use('/', Router)
+const { SERVER_PORT } = process.env
 
 
-app.listen(SERVER_PORT, () => {
-    logger.info(`Server is running on port: ${SERVER_PORT}`)
-})
+
+async function main(){
+    
+    const server: IServer = new ExpressServer()
+    await startConnection()
+    server.start(SERVER_PORT as string, () => { 
+        logger.info(`Server is running on port: ${SERVER_PORT}`)
+    })
+
+}
+
+main()
