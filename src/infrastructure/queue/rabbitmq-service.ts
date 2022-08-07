@@ -1,67 +1,57 @@
-import IQueue from "./interface/queue";
+import amqp, { Connection } from 'amqplib/callback_api';
 
-const amqp = require('amqplib/callback_api');
+const { AMQP_HOST='amqp://guest:guest@localhost:5672', AMQP_QUEUE_NAME='' } = process.env
 
-const { AMQP_HOST, AMQP_QUEUE_NAME, AMQP_PARAMS } = process.env
-
-export class RabbitMQ implements IQueue{
-    connection: any;
-    constructor(){
-        this.connection = null;
-        this.channel = null;
-    }
-    async createConnection(){
+let connection:any  = null;
+let channel:any = null;
+export default class RabbitMQService {
+    static createConnection(){
         return new Promise((resolve, reject)=>{
-            amqp.connect(AMQP_HOST, (error:any, connection:any)=>{
+            amqp.connect(AMQP_HOST, (error:any, _connection:Connection)=>{
                 if(error){
                     reject(error)
                 }
-                this.connection = connection
-                resolve(connection)
+                connection = _connection
+                resolve(_connection)
             })
         })
     }
 
-    async createChannel() {
-        const connection = getOrCreateConnection();
-        await new Promise((resolve, reject) => {
-            connection.createChannel((errorCh: any, channel: any) => {
-
-                
+    static async createChannel() {
+        const _connection = await RabbitMQService.getOrCreateConnection();
+        return new Promise((resolve, reject) => {
+            _connection.createChannel((errorChannel: any, _channel: any) => {
+                if(errorChannel){
+                    reject(errorChannel)
+                }
+                channel = _channel;
+                resolve(_channel)
 
             })
         })
-        
     }
 
-    async getOrCreateConnection(){
-        if(this.connection){
-            return this.connection
+    static getOrCreateConnection(){
+        if(connection){
+            return connection
         }
-        return this.createConnection()
+        return RabbitMQService.createConnection()
         
     }
 
-    async sendMessage(message: string) : Promise<void>{
-        const connection = await this.getOrCreateConnection()
-        return new Promise ( async (resolve, reject)=>{
-            
-            if(!this.channel){
-                connection.createChannel((errorChannel:any, channel:any): void =>{
-                    if(errorChannel){
-                        reject(errorChannel)
-                    }
-                    
-                    channel.assertQueue(AMQP_QUEUE_NAME, { durable: true });
-                    channel.sendToQueue(AMQP_QUEUE_NAME, Buffer.from(message))
-                    
-                    setTimeout(():void=>{
-                        connection.close()
-                        resolve()
-                    }, 1000)
-                })
-            }
+    static getOrCreateChannel(){
+        if(channel){
+            return channel
+        }
+        return RabbitMQService.createChannel()
+        
+    }
 
-        })
+    static async sendMessage(message: string) : Promise<void>{
+        await RabbitMQService.getOrCreateConnection()
+        await RabbitMQService.getOrCreateChannel()
+
+        channel.assertQueue(AMQP_QUEUE_NAME, { durable: true });
+        channel.sendToQueue(AMQP_QUEUE_NAME, Buffer.from(message))
     }
 }
