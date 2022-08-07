@@ -12,8 +12,6 @@ const logger = log4js.getLogger('')
 
 const { SERVER_PORT } = process.env
 
-
-
 async function main(){
     const server: IServer = new ExpressServer()
     server.start(SERVER_PORT as string, () => { 

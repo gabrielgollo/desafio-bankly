@@ -8,7 +8,7 @@ export default class FundController{
         try {
             FundValidations.create(body);
             
-            const transactionId = await FundService.processMessage(body);
+            const transactionId = await FundService.createTransaction(body);
 
             response.status(200).json({
                 transactionId,
@@ -23,18 +23,21 @@ export default class FundController{
         }
     }
 
-    static getStatus(request: Request, response: Response) {
+    static async getStatus(request: Request, response: Response) {
         const { params } = request
         try {
-            FundValidations.create(params)
+            FundValidations.checkStatus(params)
+
+            const { status } = await FundService.findTransaction(params.transactionId)
+
             response.status(200).json({
-                message: 'Conta criada com sucesso!',
-                status: 200
+                Status: status
             })
         } catch (error: any) {
             response.status(error.statusCode).json({
                 message: error.message,
-                status: error.statusCode
+                status: "Error",
+                statusCode: error.statusCode
             })
         }
     }

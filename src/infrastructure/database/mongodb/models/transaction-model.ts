@@ -1,5 +1,3 @@
-const mongoose = require('mongoose')
-
 import { TransactionsInterface } from '../../../../entities/transactions'
 import MongoDb from '../mongodb'
 import TransactionSchema from '../schemas/transaction-schema'
@@ -16,8 +14,14 @@ class TransactionModel{
         })
     }
 
+    static deleteById(_id: string){
+        return Transaction.deleteOne({
+            _id
+        })
+    }
+
     static getStatusByTransactionId(transactionId: string){
-        return Transaction.findById(transactionId).lean()
+        return Transaction.findById(transactionId).select({status: 1}).exec()
     }
 }
 

@@ -27,7 +27,6 @@ class ExpressServer implements IServer{
 
         this.server.use('/', (req: Request, _res: Response, next: NextFunction) => {
             requestLogger(req)
-            
             next()
         })
         
