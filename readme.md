@@ -9,6 +9,9 @@ Para roda-los é necessário ter um servidor MongoDb e um RabbitMq.
 # Arquitetura de Solução
 ![](https://i.imgur.com/Wfg6siT.png)
 
+# Dashboard for metrics
+![](https://i.imgur.com/1U1U8dQ.png)
+
 # Teste Técnico - BackEnd #VemSerAcesso
 
 Olá 😊

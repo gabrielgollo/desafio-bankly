@@ -15,11 +15,22 @@ export default class FundController{
                 message: 'Transação criada com sucesso!',
                 status: 200
             })
+
+            return {
+                message: 'Transação criada com sucesso!',
+                status: 200
+            }
+
         } catch (error: any) {
             response.status(error.statusCode || 500).json({
                 message: error.message,
                 status: error.statusCode
             })
+
+            return {
+                message: error.message,
+                status: error.statusCode
+            }
         }
     }
 
@@ -37,12 +48,22 @@ export default class FundController{
             if(statusMessage) obj["Message"] = statusMessage
 
             response.status(200).json(obj)
+
+            return {
+                status: status || 200,
+                message: statusMessage || 'Success'
+            }
         } catch (error: any) {
             response.status(error.statusCode).json({
                 message: error.message,
                 status: "Error",
                 statusCode: error.statusCode
             })
+
+            return {
+                status: error.statusCode,
+                message: error.message || 'Error'
+            }
         }
     }
 }
