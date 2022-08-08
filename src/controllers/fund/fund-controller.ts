@@ -28,11 +28,15 @@ export default class FundController{
         try {
             FundValidations.checkStatus(params)
 
-            const { status } = await FundService.findTransaction(params.transactionId)
+            const { status, statusMessage } = await FundService.findTransaction(params.transactionId)
 
-            response.status(200).json({
+            const obj: any = {
                 Status: status
-            })
+            }
+
+            if(statusMessage) obj["Message"] = statusMessage
+
+            response.status(200).json(obj)
         } catch (error: any) {
             response.status(error.statusCode).json({
                 message: error.message,

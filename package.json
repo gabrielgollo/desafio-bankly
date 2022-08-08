@@ -4,6 +4,7 @@
   "description": "Olá 😊\r Parabéns por chegar aqui.\r Seu perfil e valores deram match com a nossa cultura e por isso você está evoluindo em nosso processo :grinning:",
   "main": "app.ts",
   "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand --detectOpenHandles --coverage --forceExit",
     "start": "npx ts-node app.ts"
   },
   "author": "",

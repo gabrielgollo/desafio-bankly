@@ -1,3 +1,14 @@
+# API
+
+Essa API está trabalhando em conjunto com o consumer do repositório abaixo:
+https://github.com/gabrielgollo/transaction-worker
+
+Para roda-los é necessário ter um servidor MongoDb e um RabbitMq.
+
+
+# Arquitetura de Solução
+![](https://i.imgur.com/Wfg6siT.png)
+
 # Teste Técnico - BackEnd #VemSerAcesso
 
 Olá 😊

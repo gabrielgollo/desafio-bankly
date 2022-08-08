@@ -21,7 +21,7 @@ class TransactionModel{
     }
 
     static getStatusByTransactionId(transactionId: string){
-        return Transaction.findById(transactionId).select({status: 1}).exec()
+        return Transaction.findById(transactionId).select({status: 1, statusMessage: 1}).exec()
     }
 }
 
