@@ -1,7 +1,10 @@
+import { getLogger } from "log4js";
 import { TransactionsInterface } from "../entities/transactions";
 import { Exception } from "../helpers/exception";
 import TransactionModel from "../infrastructure/database/mongodb/models/transaction-model";
 import RabbitMQService from "../infrastructure/queue/rabbitmq-service";
+
+const logger = getLogger('FundService')
 
 export default class FundService{
     public static async createTransaction(data: TransactionsInterface) {
@@ -18,8 +21,10 @@ export default class FundService{
                 if(transactionId){
                     TransactionModel.deleteById(transactionId)
                 }
-            } finally {
-                throw new Exception(error.message || 'Failed to create a transaction!', 500)
+            } catch (_error: any) {
+                const message = _error.message || 'Failed to create a transaction!'
+                logger.error(message)
+                throw new Exception(message, _error.statusCode || 500)
             }
         } 
     }
@@ -42,7 +47,7 @@ export default class FundService{
             if(!status) throw new Exception('No transaction found!', 400)
             return status._doc
         } catch (error: any) {
-            throw new Exception(error.message || 'An error has been found!', 500)
+            throw new Exception(error.message || 'An error has been found!', error.statusCode)
         }
 
     }

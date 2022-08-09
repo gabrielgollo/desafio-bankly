@@ -1,8 +1,9 @@
 import express, { Request, Response, NextFunction } from "express";
 import { IServer } from "../interface/server";
 import Routes from './routes'
-import { requestLogger } from "../../../middlewares/request-logger";
 
+import swaggerJson from '../../../../swagger.json'
+import swaggerUi from 'swagger-ui-express'
 
 class ExpressServer implements IServer{
     server: express.Express;
@@ -25,13 +26,22 @@ class ExpressServer implements IServer{
     private setRouterAndConfigs(){
         this.server.use(express.json())
 
-        this.server.use('/', (req: Request, _res: Response, next: NextFunction) => {
-            requestLogger(req)
+        this.server.use('/', (_req: Request, _res: Response, next: NextFunction) => {
+            //requestLogger(_req)
             next()
         })
         
 
         this.server.use('/', Routes)
+        
+        this.configureSwagger()
+    }
+
+    private configureSwagger(){
+        this.server.use('/api-docs', 
+            swaggerUi.serve,
+            swaggerUi.setup(swaggerJson, { explorer: true })
+        )
     }
 }
 

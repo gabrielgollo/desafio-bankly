@@ -1,0 +1,166 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Documentation of bankly test-backend",
+    "version": "1.0.0",
+    "title": "Transactions API",
+    "contact": {
+      "email": "gabrielsantosgollo@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "schemes": ["http"],
+  "host": "localhost:8808",
+  "basePath": "/",
+  "paths": {
+    "/fund-transfer/{transactionId}": {
+      "get": {
+        "summary": "Get status of a transaction",
+        "description": "Get status of a transaction",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "Transaction ID that you need to know the status",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/TransactionConsultResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponseConsult"
+            }
+          }
+        }
+      }
+    },
+    "/fund-transfer": {
+      "post": {
+        "summary": "Create a transaction",
+        "description": "Create a transaction",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "TransactionCreate object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TransactionCreate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/TransactionCreateResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponseCreate"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "TransactionCreateResponse": {
+      "type": "object",
+      "properties": {
+        "transactionId": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "number"
+        }
+      }
+    },
+    "TransactionInvalidCreateResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "number"
+        }
+      }
+    },
+    "TransactionCreate": {
+      "type": "object",
+      "properties": {
+        "accountOrigin": {
+          "type": "string"
+        },
+        "accountDestination": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        }
+      }
+    },
+    "TransactionConsultResponse": {
+      "type": "object",
+      "properties": {
+        "Status": {
+          "type": "string"
+        },
+        "Message": {
+          "type": "string"
+        }
+      }
+    },
+    "InvalidResponseCreate": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "InvalidResponseConsult": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "statusCode": {
+          "type": "number"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

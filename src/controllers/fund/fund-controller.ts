@@ -12,12 +12,12 @@ export default class FundController{
 
             response.status(200).json({
                 transactionId,
-                message: 'Transação criada com sucesso!',
+                message: 'Transaction created successfully!',
                 status: 200
             })
 
             return {
-                message: 'Transação criada com sucesso!',
+                message: 'Transaction created successfully!',
                 status: 200
             }
 
